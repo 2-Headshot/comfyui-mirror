@@ -1,21 +1,21 @@
-名称: 镜像至阿里云
-在[workflow_dispatch]时
-作业:
-  镜像:
+name: Mirror to Aliyun
+on: [workflow_dispatch]
+jobs:
+  mirror:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
-      - name: 登录阿里云
+      - name: Login Aliyun
         uses: docker/login-action@v3
         with:
           registry: crpi-stnd54wvdbcabxdv.cn-huhehaote.personal.cr.aliyuncs.com
-          用户名: ${{ secrets.ALIYUN_USERNAME }}
-          密码: ${{ secrets.ALIYUN_PASSWORD }}
-      - 名称: 同步comfyui
+          username: ${{ secrets.ALIYUN_USERNAME }}
+          password: ${{ secrets.ALIYUN_PASSWORD }}
+      - name: Sync comfyui
         run: |
           set -euxo pipefail
           SRC_TAG=latest-rocm-6.3.3
-          目标=crpi-stnd54wvdbcabxdv.cn-huhehaote.personal.cr.aliyuncs.com/headshot/comfyui-gfx906
+          DEST=crpi-stnd54wvdbcabxdv.cn-huhehaote.personal.cr.aliyuncs.com/headshot/comfyui-gfx906
           docker pull mixa3607/comfyui-gfx906:$SRC_TAG
           docker tag mixa3607/comfyui-gfx906:$SRC_TAG $DEST:$SRC_TAG
           docker push $DEST:$SRC_TAG
